@@ -18,7 +18,7 @@ class Controller extends BaseController
      */
     public function apiWithKey(){
         $client = new Client;
-        $url = "api.coincap.io/v2/assets";
+        $url = "http://api.coincap.io/v2/assets";
         
         $headers = [
             'api-key' => '5f87c432-9344-4350-b91d-32999d89bf1d'
@@ -38,13 +38,13 @@ class Controller extends BaseController
                 $maxValue = floatval($value->priceUsd);
             }
         }
-        $data = array('cryptoName' => $maxName, "price"=>$maxValue, "growth" => $maxGrowth);
+        $data = array('name' => $maxName, "price"=>$maxValue, "growth" => $maxGrowth);
         DB::table('cryptos')->insert($data);
 
-        return view('crypto', compact([
+        return view('crypto', compact('responseBody'),[
             'maxName' => $maxName,
             'maxGrowth' => substr($maxGrowth,0,6),
             'maxValue' => substr($maxValue,0,8),
-        ]));
+        ]);
     }
 }
